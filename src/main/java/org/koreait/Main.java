@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Main {
 
     static List<Article> articles = new ArrayList<>();
+    static List<User> users = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -15,6 +16,7 @@ public class Main {
         makeTestData();
 
         int lastArticleId = 3;
+        int lastUser = 0;
 
         while (true) {
             System.out.print("명령어) ");
@@ -63,6 +65,28 @@ public class Main {
                 }
             }
 
+            else if (cmd.startsWith("article list ")) {
+                String findchar = (cmd.split(" ")[2]);
+                System.out.println("==게시글 목록==");
+                if (articles.size() == 0) {
+                    System.out.println("아무것도 없어");
+                } else {
+                    System.out.println("  번호   /    날짜   /   제목   /   내용   ");
+                    for (int i = articles.size() - 1; i >= 0; i--) {
+                        Article article = articles.get(i);
+                        if (article.getTitle().contains(findchar)) {
+                            if (Util.getNow().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
+                                System.out.printf("  %d   /   %s      /   %s   /   %s  \n", article.getId(),
+                                        article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
+                            } else {
+                                System.out.printf("  %d   /   %s      /   %s   /   %s  \n", article.getId(),
+                                        article.getRegDate().split(" ")[0], article.getTitle(), article.getBody());
+                            }
+                        }
+                    }
+                }
+            }
+
             else if (cmd.startsWith("article detail")) {
                 System.out.println("==게시글 상세보기==");
 
@@ -70,10 +94,6 @@ public class Main {
 
                 Article foundArticle = getArticleById(id);
 
-                if (foundArticle == null) {
-                    System.out.println("해당 게시글은 없습니다");
-                    continue;
-                }
                 System.out.println("번호 : " + foundArticle.getId());
                 System.out.println("작성날짜 : " + foundArticle.getRegDate());
                 System.out.println("수정날짜 : " + foundArticle.getUpdateDate());
@@ -120,6 +140,22 @@ public class Main {
 
                 System.out.println(id + "번 게시글이 수정되었습니다");
             }
+/*
+            else if (cmd.equals("article member")) {
+                int id = lastUser+1;
+                System.out.println("==로그인 메뉴==");
+                System.out.print("사용하실 id: ");
+                String loginId = sc.nextLine();
+                String regDate = Util.getNow();
+                String updateDate = regDate;
+                System.out.print("사용하실 pw: ");
+                String loginPw = sc.nextLine();
+                System.out.print("사용자 이름: ");
+                String name = sc.nextLine();
+
+                User user = new User(id, regDate, loginId, loginPw, name);
+                users.add(user);
+            }*/
 
             else {
                 System.out.println("사용할 수 없는 명령어입니다");
@@ -145,7 +181,6 @@ public class Main {
         }
         return null;
     }
-
     private static void makeTestData() {
         System.out.println("테스트 데이터 생성");
         articles.add(new Article(1, "2023-12-12 12:12:12",
@@ -154,6 +189,64 @@ public class Main {
         articles.add(new Article(3, Util.getNow(), Util.getNow(), "제목3", "내용3"));
     }
 }
+/*
+class User {
+    private int id;
+    private String regDate;
+    private String loginId;
+    private String loginPw;
+    private String name;
+
+    public User(int id, String regDate, String loginId, String loginPw, String name) {
+        this.id = id;
+        this.regDate = regDate;
+        this.loginId = loginId;
+        this.loginPw = loginPw;
+        this.name = name;
+    }
+    public String getRegDate() {
+        return regDate;
+    }
+
+    public String getUpdateDate() {
+        return regDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.regDate = regDate;
+    }
+
+    public void setRegDate(String regDate) {
+        this.regDate = regDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(String title) {
+        this.loginId = loginId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String body) {
+        this.name = name;
+    }
+
+
+}
+*/
 
 class Article {
     private int id;
