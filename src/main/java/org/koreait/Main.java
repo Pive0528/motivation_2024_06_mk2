@@ -1,5 +1,6 @@
 package org.koreait;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,9 +15,10 @@ public class Main {
         System.out.println("==프로그램 시작==");
 
         makeTestData();
+        makeTestMember();
 
         int lastArticleId = 3;
-        int lastUser = 0;
+        int lastUser = 3;
 
         while (true) {
             System.out.print("명령어) ");
@@ -140,22 +142,42 @@ public class Main {
 
                 System.out.println(id + "번 게시글이 수정되었습니다");
             }
-/*
-            else if (cmd.equals("article member")) {
+            else if (cmd.equals("member join")) {
                 int id = lastUser+1;
-                System.out.println("==로그인 메뉴==");
-                System.out.print("사용하실 id: ");
-                String loginId = sc.nextLine();
+                System.out.println("==회원가입 메뉴==");
                 String regDate = Util.getNow();
-                String updateDate = regDate;
-                System.out.print("사용하실 pw: ");
-                String loginPw = sc.nextLine();
+
+                String loginId = null;
+                while(true) {
+                    System.out.print("사용하실 id: ");
+                    loginId = sc.nextLine().trim();
+                    if(isJoinableLoginId(loginId)==false) {
+                        System.out.println("이미 사용중인 id입니다. 다시 입력해주세요.");
+                        continue;
+                    }
+                    break;
+                }
+                String loginPw = null;
+                while(true) {
+                    System.out.print("사용하실 pw: ");
+                    loginPw = sc.nextLine().trim();
+                    if(isJoinableLoginPw(loginPw)==false) {
+                        System.out.println("이미 사용중인 pw입니다. 다시 입력해주세요.");
+                        continue;
+                    }
+                    break;
+                }
                 System.out.print("사용자 이름: ");
                 String name = sc.nextLine();
 
+
+
+
                 User user = new User(id, regDate, loginId, loginPw, name);
                 users.add(user);
-            }*/
+                System.out.printf("%d번 사용자로 회원가입 되었습니다.\n", id);
+                lastUser++;
+            }
 
             else {
                 System.out.println("사용할 수 없는 명령어입니다");
@@ -165,6 +187,24 @@ public class Main {
         System.out.println("==프로그램 종료==");
         sc.close();
 
+    }
+
+    private static boolean isJoinableLoginPw(String loginPw) {
+        for (User user : users) {
+            if(user.getLoginPw().equals(loginPw)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isJoinableLoginId(String loginId) {
+        for (User user : users) {
+            if(user.getLoginId().equals(loginId)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static Article getArticleById(int id) {
@@ -182,14 +222,21 @@ public class Main {
         return null;
     }
     private static void makeTestData() {
-        System.out.println("테스트 데이터 생성");
+        System.out.println("테스트 데이터 3개 생성");
         articles.add(new Article(1, "2023-12-12 12:12:12",
                 "2023-12-12 12:12:12", "제목1", "내용1"));
         articles.add(new Article(2, Util.getNow(), Util.getNow(), "누목2", "내용2"));
         articles.add(new Article(3, Util.getNow(), Util.getNow(), "제목3", "내용3"));
     }
+
+    private static void makeTestMember() {
+        System.out.println("테스트 회원 3명 생성");
+        users.add(new User(1, Util.getNow(), "회원아이디1", "회원비번1", "회원1"));
+        users.add(new User(2, Util.getNow(), "회원아이디2", "회원비번2", "회원2"));
+        users.add(new User(3, Util.getNow(), "회원아이디3", "회원비번3", "회원3"));
+    }
 }
-/*
+
 class User {
     private int id;
     private String regDate;
@@ -208,14 +255,6 @@ class User {
         return regDate;
     }
 
-    public String getUpdateDate() {
-        return regDate;
-    }
-
-    public void setUpdateDate(String updateDate) {
-        this.regDate = regDate;
-    }
-
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
@@ -232,21 +271,29 @@ class User {
         return loginId;
     }
 
-    public void setLoginId(String title) {
+    public void setLoginId(String loginId) {
         this.loginId = loginId;
+    }
+
+    public String getLoginPw() {
+        return loginPw;
+    }
+
+    public void setLoginPw(String loginPw) {
+        this.loginPw = loginPw;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String body) {
+    public void setName(String name) {
         this.name = name;
     }
 
 
 }
-*/
+
 
 class Article {
     private int id;
