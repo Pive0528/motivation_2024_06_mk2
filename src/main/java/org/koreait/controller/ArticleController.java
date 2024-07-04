@@ -45,10 +45,7 @@ public class ArticleController extends Controller {
         }
     }
 
-    private void doWrite()  {
-//        if (MemberController(isLogined)){
-//
-//        }
+    private void doWrite() {
         System.out.println("==게시글 작성==");
         int id = lastArticleId + 1;
         String regDate = Util.getNow();
@@ -129,12 +126,6 @@ public class ArticleController extends Controller {
         int id = Integer.parseInt(cmd.split(" ")[2]);
 
         Article foundArticle = getArticleById(id);
-
-        try {
-
-        } catch (Exception e) {
-            System.out.println("에러!");
-        }
 
         if (foundArticle == null) {
             System.out.println("해당 게시글은 없습니다");

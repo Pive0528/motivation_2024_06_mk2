@@ -12,7 +12,6 @@ public class MemberController extends Controller {
     private Scanner sc;
     private List<Member> members;
     private String cmd;
-    Member loginedMember = null;
 
     private int lastMemberId = 3;
 
@@ -40,25 +39,12 @@ public class MemberController extends Controller {
         }
     }
 
-    private boolean isLogined(){
-        return loginedMember != null;
-    }
-
     private void doLogout() {
-        if (!isLogined()) {
-            System.out.println("이미 로그아웃 상태");
-            return;
-        }
         loginedMember = null;
-
         System.out.println("로그아웃 되었습니다");
     }
 
     private void doLogin() {
-        if (isLogined()) {
-            System.out.println("이미 로그인중");
-            return;
-        }
         System.out.println("==로그인==");
 
         System.out.print("로그인 아이디 : ");
